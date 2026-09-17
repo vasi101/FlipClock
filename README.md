@@ -24,3 +24,21 @@ After changing `shared`, run `powershell -NoProfile -ExecutionPolicy Bypass -Fil
 Run checks from any working directory with `node tests/verify.cjs`, `node tests/verify-background.cjs`, and `node tests/verify-timer.cjs` (use the appropriate absolute path when outside this project). Build the Windows screensaver with `tools/Build-Screensaver.ps1`, or regenerate icons with `tools/Build-Icon.ps1`, then rerun packaging.
 
 Installed copies in your user Apps folder are independent of this source folder reorganization.
+
+## GitHub releases
+
+Download platform ZIPs from [GitHub Releases](https://github.com/vasi101/FlipClock/releases). Generated archives, the downloaded SDK, and compiled Windows binaries are excluded from Git.
+
+The release workflow runs the JavaScript checks, downloads the pinned WebView2 SDK, builds the Windows screensaver, and publishes all three platform ZIPs with SHA-256 checksums when a version tag is pushed. Update `RELEASE_NOTES.md` before each release.
+
+For the first release, commit the project and release configuration, then push the commit and tag:
+
+```sh
+git add .
+git commit -m "Prepare Flip Clock v1.0.0 release"
+git push origin main
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+GitHub Actions must be enabled for the repository. A source checkout needs `tools/Build-Screensaver.ps1` before packaging Windows; download and extract the SDK version specified in that script into `tools/screensaver/sdk` first. Release ZIPs already include the compiled screensaver.

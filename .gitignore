@@ -1,0 +1,26 @@
+# Generated release archives
+/releases/
+
+# Downloaded WebView2 build dependencies
+/tools/screensaver/sdk/
+/tools/screensaver/webview2.zip
+*.nupkg
+
+# Generated Windows screensaver and runtime copies
+/Windows/FlipClock.scr
+/Windows/Microsoft.Web.WebView2.*.dll
+/Windows/WebView2Loader.dll
+
+# Local dependencies, logs, and editor/OS files
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*.tmp
+.env
+.env.*
+!.env.example

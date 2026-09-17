@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify JavaScript
+        run: |
+          node tests/verify.cjs
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          node tests/verify-background.cjs
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          node tests/verify-timer.cjs
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Download pinned WebView2 SDK
+        run: |
+          Invoke-WebRequest 'https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/1.0.4191.47/microsoft.web.webview2.1.0.4191.47.nupkg' -OutFile tools/screensaver/webview2.zip
+          Expand-Archive tools/screensaver/webview2.zip tools/screensaver/sdk -Force
+      - name: Build screensaver and packages
+        run: |
+          ./tools/Build-Screensaver.ps1
+          ./tools/Package.ps1
+          Get-ChildItem releases/Flip-Clock-*.zip | Sort-Object Name | ForEach-Object {
+            '{0}  {1}' -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
+          } | Set-Content releases/SHA256SUMS.txt -Encoding ascii
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$env:RELEASE_TAG" releases/Flip-Clock-Windows.zip releases/Flip-Clock-Linux.zip releases/Flip-Clock-macOS.zip releases/SHA256SUMS.txt --verify-tag --title "Flip Clock $env:RELEASE_TAG" --notes-file RELEASE_NOTES.md
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
