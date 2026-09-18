@@ -13,6 +13,7 @@
 
 # Local dependencies, logs, and editor/OS files
 node_modules/
+.npm-cache/
 *.log
 .DS_Store
 Thumbs.db

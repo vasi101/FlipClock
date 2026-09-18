@@ -1,226 +1,119 @@
 ﻿# Flip Clock
 
-A quiet, customizable flip clock for your desktop. Keep the time in view, set a countdown for your next break, and make the clock your own with themes, wallpapers, and frosted glass cards.
+A minimal desktop flip clock with animated digits, colorful themes, custom wallpapers, and a built-in countdown timer. Designed for a clear, distraction-free view of the time, from a simple dark clock to a personalized fullscreen display.
 
-Built with HTML, CSS, and vanilla JavaScript. Runs locally in your browser on **Windows, macOS, and Linux**, with no account, server, or internet connection needed after download.
+The clock works offline, requires no account, and keeps your preferences on your device.
 
-[Installation](#installation) · [Countdown timer](#countdown-timer) · [Customization](#customization) · [Development](#development)
+![Flip Clock with frosted glass cards over a purple starry sky](docs/screenshots/Screenshot%202026-09-18%20223552.png)
+
+*Your wallpaper, your clock — adaptive glass cards over a custom night-sky background.*
+
+[Screenshots](#screenshots) · [Features](#features) · [Countdown timer](#countdown-timer) · [Wallpapers](#wallpapers) · [Installation](#installation)
+
+## Screenshots
+
+| Minimal dark | Warm gradient |
+| --- | --- |
+| ![Dark clock with large gray digits and a black background](docs/screenshots/Screenshot%202026-09-18%20223435.png) | ![Pink clock digits over a warm peach and purple gradient](docs/screenshots/Screenshot%202026-09-18%20223509.png) |
+| A clean display with weekday, date, and seconds. | Combine clock themes with colorful backgrounds. |
+
+![Flip Clock in 12-hour mode with glass cards over an orange abstract wallpaper](docs/screenshots/Screenshot%202026-09-17%20075739.png)
+
+*A warmer look: custom wallpaper, translucent cards, and a 12-hour display.*
 
 ## Features
 
-- **Animated flip clock** with 12/24-hour time, optional seconds, and a weekday/date display.
-- **10 clock themes and 10 built-in wallpapers**, from a minimal dark clock to colorful backgrounds.
-- **Custom image backgrounds** with adaptive glass cards, adjustable opacity, and blur.
-- **Countdown timer** with quick presets, pause/resume, reset, and an optional completion alarm.
-- **Optional tick-tock sound** and a shared sound-volume control.
-- **Fullscreen mode** with controls that fade after inactivity.
-- **Keep awake in fullscreen**, where supported by your browser.
-- **Saved preferences** and timer state using local browser storage.
-- **Windows screensaver** with support for multiple displays and separate appearance settings.
-- **Reduced-motion support** that respects your system preference.
+- **Animated flip display** — large hour and minute cards with optional seconds, weekday, and date.
+- **Flexible time format** — switch between 12-hour and 24-hour time using your computer's local timezone.
+- **10 themes and 10 wallpapers** — combine a clock palette with a built-in background.
+- **Custom image backgrounds** — choose your own JPG, PNG, WebP, or AVIF image.
+- **Adaptive glass cards** — frosted cards with colors that adapt to your wallpaper, plus adjustable opacity and blur.
+- **Countdown timer** — custom durations, quick presets, pause/resume, reset, and an optional alarm.
+- **Fullscreen focus** — controls fade when idle, with an optional keep-awake setting where supported.
+- **Optional sound** — synthesized tick-tock audio and adjustable volume.
+- **Saved preferences** — restore appearance choices and timer state using local browser storage.
+- **Windows screensaver** — a matching clock across connected displays, with separate appearance settings.
 
-## Installation
+## Make it your own
 
-All installers run for your user account without administrator access. The regular clock uses an existing browser instead of bundling a browser engine.
+Use a plain dark background for a minimal desk clock, pair warm digits with a gradient wallpaper, or add a photo and translucent glass cards. Settings let you adjust clock size, animation, seconds, and date visibility. The clock also respects your system's reduced-motion preference.
 
-| Platform | Install method | Requirements |
-| --- | --- | --- |
-| Windows | Windows setup executable | Windows x64, Microsoft Edge, WebView2 Runtime, .NET Framework 4.6.2 or newer |
-| macOS | Shell installer from the source folder | macOS and a browser; Chrome, Edge, Brave, or Chromium for an app window |
-| Linux | Shell installer from the source folder | Linux desktop and a browser; Chrome, Chromium, Edge, or Brave for an app window |
+Custom images stay on your device and are never uploaded. Images up to **25 MB** are resized to a maximum dimension of **2560 pixels** before being saved locally.
 
-### Windows
+## Wallpapers
 
-1. Open [Releases](https://github.com/vasi101/FlipClock/releases) and download **FlipClock-Setup.exe** from a published release.
-2. Double-click the executable. Setup checks for Edge and WebView2, then installs the clock and screensaver.
-3. Open **Flip Clock** from your desktop or Start menu.
+Browse the [wallpaper collection](assets/Walpapers/) for backgrounds to pair with your clock. To apply one, download the image, open **Settings → Choose your image**, and select it. Adjust **Glass opacity** and **Glass blur** to suit the background.
 
-The app installs to `%LOCALAPPDATA%\Programs\Flip Clock`. Setup enables the screensaver after **five minutes**, or keeps your existing shorter delay, and enables sign-in on resume.
+These image assets are separate from the 10 built-in wallpapers and are selected through the custom-image picker.
 
-Use **Configure Flip Clock Screensaver** in the Start menu to customize the screensaver. Use **Windows Screen Saver Settings** to adjust its idle delay.
+## Countdown timer
 
-> The Windows installer is unsigned. If no release has been published yet, use the browser-only option below or build the installer from source. Full installation and screensaver dismissal/sign-in still need interactive verification.
+Open the **stopwatch button** in the toolbar to set a timer for a focus session, a short break, or a reminder.
 
-### macOS
+| Countdown on a gradient background | Countdown with a custom wallpaper |
+| --- | --- |
+| ![Countdown timer showing hours, minutes, seconds, quick presets, Start, Reset, and an enabled alarm](docs/screenshots/Screenshot%202026-09-18%20223741.png) | ![Pink countdown timer panel over the glass clock and starry wallpaper](docs/screenshots/Screenshot%202026-09-18%20223658.png) |
 
-Download the repository using **Code → Download ZIP** on [GitHub](https://github.com/vasi101/FlipClock), then extract it. Open Terminal in the extracted project folder and run:
+- Enter a duration from **1 second to 99 hours, 59 minutes, and 59 seconds**.
+- Choose a quick preset: **1 minute**, **5 minutes**, **25 minutes**, or **1 hour**.
+- **Start, pause, resume, or reset** the countdown.
+- Enable **Alarm when finished** for an audible alert.
+- Close the timer panel while the countdown continues.
 
-```sh
-cd macOS
-sh "Install macOS.command"
-```
+Running and paused timers are restored when local storage is available. Keep the app open and your computer awake to hear the alarm on time; the timer updates when reopened but cannot sound while the app is closed.
 
-Alternatively, with Git installed:
-
-```sh
-git clone https://github.com/vasi101/FlipClock.git
-cd FlipClock/macOS
-sh "Install macOS.command"
-```
-
-Open **Flip Clock.app** from your user Applications folder (`~/Applications`). Chrome, Edge, Brave, or Chromium provides a dedicated app window; otherwise the launcher opens your default browser.
-
-This installer creates a local browser launcher, not a signed or notarized native application. The Windows screensaver is not included. Native macOS launching still needs verification.
-
-### Linux
-
-Download the repository using **Code → Download ZIP** on [GitHub](https://github.com/vasi101/FlipClock), then extract it. Open a terminal in the extracted project folder and run:
-
-```sh
-cd Linux
-sh install-linux.sh
-```
-
-Alternatively, with Git installed:
-
-```sh
-git clone https://github.com/vasi101/FlipClock.git
-cd FlipClock/Linux
-sh install-linux.sh
-```
-
-Open **Flip Clock** from your application menu. Chrome, Chromium, Edge, or Brave provides a dedicated app window; otherwise the launcher uses `xdg-open` to open your default browser.
-
-The default installation paths are:
-
-- App files: `~/.local/share/flip-clock`
-- Application launcher: `~/.local/share/applications/flip-clock.desktop`
-
-If you set `XDG_DATA_HOME`, the installer uses that directory instead of `~/.local/share`. It must be an absolute path. The Windows screensaver is not included. Native Linux launching still needs verification.
-
-### Run without installing — any OS
-
-Download and extract the repository, then open **`shared/index.html`** in a modern browser. Keep the entire `shared` folder together so the scripts, styles, and icons load correctly.
-
-No Node.js, package installation, or build step is needed to use the clock this way.
-
-## Using the clock
-
-The clock follows your computer's local time and timezone. Move the pointer to reveal the toolbar after it fades.
+## Controls
 
 | Control | Action |
 | --- | --- |
-| Timer button | Open the countdown timer |
-| Settings button / **S** | Open or close settings |
-| Fullscreen button / **F** | Toggle fullscreen |
-| Theme button / **T** | Cycle through clock themes |
+| Stopwatch button | Open the countdown timer |
+| **S** / Settings button | Open or close settings |
+| **F** / Fullscreen button | Toggle fullscreen |
+| **T** / Theme button | Cycle through themes |
 | **Escape** | Close an open panel or exit browser fullscreen |
 
-### Countdown timer
+Move the pointer to reveal the toolbar after it fades.
 
-Use the toolbar's **stopwatch icon** to open the countdown panel.
+## Installation
 
-1. Enter **hours, minutes, and seconds**, or choose a preset: **1 min**, **5 min**, **25 min**, or **1 hour**.
-2. Enable **Alarm when finished** if you want an audible alert.
-3. Select **Start**. Use **Pause** and **Resume** to control the countdown, or **Reset** to return to the selected duration.
+The regular clock runs locally in a browser on **Windows, macOS, and Linux**. Platform launchers provide an app window where supported; the macOS and Linux versions may open the default browser. The screensaver is available on Windows only.
 
-The timer supports durations from **1 second to 99:59:59**. You can close the panel while it runs. Running and paused timers are saved locally when browser storage is available and restored when you reopen the clock.
+### Windows
 
-The completion alarm sounds for up to **30 seconds**, or until stopped. **Sound volume** in settings controls both the timer alarm and tick-tock sound.
+1. Download **FlipClock-Setup.exe** from a published [release](https://github.com/vasi101/FlipClock/releases).
+2. Double-click the installer and follow the prompts. No administrator access is needed.
+3. Open **Flip Clock** from your desktop or Start menu.
 
-Keep the app open and your computer awake to hear the alarm on time. If you close the app or your computer sleeps, the timer updates when the app resumes; it cannot sound an alarm while closed. After reopening, interact with the page if your browser requires a gesture to enable audio.
+Requires Windows x64, Microsoft Edge, WebView2 Runtime, and .NET Framework 4.6.2 or newer. Setup installs both the clock and screensaver, enables the screensaver after five minutes (or your existing shorter delay), and enables sign-in on resume.
 
-### Customization
+Use **Configure Flip Clock Screensaver** in the Start menu to choose its appearance. To uninstall, choose **Uninstall Flip Clock**.
 
-Open **Settings** to adjust:
+### macOS
 
-- **Time display:** 12/24-hour format, seconds, date, animation, and clock size.
-- **Appearance:** mix any of the 10 themes with any of the 10 wallpapers.
-- **Custom backgrounds:** choose a JPG, PNG, WebP, or AVIF image up to 25 MB.
-- **Glass cards:** enable or disable the effect and adjust opacity and blur. Colors adapt to your image.
-- **Audio:** enable tick-tock sound and change sound volume.
-- **Keep awake:** request that the screen stay awake while the clock is fullscreen.
+1. On the [project page](https://github.com/vasi101/FlipClock), choose **Code → Download ZIP**, then extract the download.
+2. Open Terminal in the extracted project folder and run:
 
-Custom images are resized to a maximum dimension of 2560 pixels and stored in your browser; nothing is uploaded. **Use saved image** restores your custom background after trying a built-in wallpaper, and **Remove image** deletes the stored copy. If storage is unavailable, the image is available only for the current session.
+   ```sh
+   cd macOS
+   sh "Install macOS.command"
+   ```
 
-Keep awake is enabled by default, but only activates when you enter fullscreen using **F** or the fullscreen button. Maximizing the window alone does not activate it. Leaving fullscreen, hiding/minimizing the clock, or disabling the setting releases the request. Browser or battery policies may deny it; settings shows its status. Screensaver mode never requests keep-awake.
+3. Open **Flip Clock.app** from `~/Applications`.
 
-## Windows screensaver
+Chrome, Edge, Brave, or Chromium opens the clock in a dedicated app window; otherwise it opens in your default browser. No administrator access is needed. To uninstall, move `~/Applications/Flip Clock.app` to Trash.
 
-The Windows setup includes a matching screensaver that fills connected displays, hides the toolbar, and mutes audio.
+### Linux
 
-- Configure its theme and wallpaper through **Configure Flip Clock Screensaver** in the Start menu.
-- Its WebView2 profile is separate from the regular clock, so appearance choices must be configured separately.
-- Mouse or keyboard activity dismisses it and requests Windows locking; secure resume is enabled by the installer.
-- It is an idle screensaver, not a replacement for the Windows lock screen.
-- Installation does not change display-off or sleep settings.
+1. On the [project page](https://github.com/vasi101/FlipClock), choose **Code → Download ZIP**, then extract the download.
+2. Open a terminal in the extracted project folder and run:
 
-## Updating and uninstalling
+   ```sh
+   cd Linux
+   sh install-linux.sh
+   ```
 
-Re-run the appropriate installer from a newer download to update the installed files.
+3. Open **Flip Clock** from your application menu.
 
-| Platform | Uninstall |
-| --- | --- |
-| Windows | Choose **Uninstall Flip Clock** from the Start menu to remove the app and screensaver. |
-| macOS | Move `~/Applications/Flip Clock.app` to Trash. |
-| Linux | Remove the installed `flip-clock` folder and `applications/flip-clock.desktop` under your data directory. |
+Chrome, Chromium, Edge, or Brave opens a dedicated app window; otherwise the clock opens in your default browser. No administrator access is needed. To uninstall, remove `~/.local/share/flip-clock` and `~/.local/share/applications/flip-clock.desktop`, or their equivalents under your custom `XDG_DATA_HOME`.
 
-Browser preferences and saved images may remain until you clear the browser's stored data. Windows also preserves `%LOCALAPPDATA%\FlipClock\ScreensaverProfile`. Its uninstaller restores the previous screensaver if it still exists, or selects the Windows blank screensaver; secure resume and the current timeout remain in place.
-
-## Development
-
-### Project structure
-
-```text
-shared/                  Canonical HTML, CSS, JavaScript, and icons
-Windows/                 Windows app files and installation scripts
-macOS/                   macOS app files and shell installer
-Linux/                   Linux app files and shell installer
-tools/                   Packaging, icon, screensaver, and setup builders
-tests/                   JavaScript verification scripts
-docs/                    Additional documentation
-.github/workflows/       Release automation
-releases/                Generated packages (excluded from Git)
-```
-
-Make clock changes in **`shared/`**. The packaging script copies these files into each platform folder, overwriting the corresponding platform copies.
-
-### Run the checks
-
-With Node.js installed (the release workflow uses Node.js 22), run these commands from the repository root:
-
-```sh
-node tests/verify.cjs
-node tests/verify-background.cjs
-node tests/verify-timer.cjs
-node tests/verify-awake.cjs
-```
-
-The checks cover clock behavior, appearance preferences, backgrounds, the timer, and fullscreen keep-awake behavior. Native installers and operating-system interactions need separate testing on their target OS.
-
-### Package the platform folders
-
-From PowerShell at the repository root:
-
-```powershell
-./tools/Package.ps1
-```
-
-This synchronizes shared assets and creates `Flip-Clock-Windows.zip`, `Flip-Clock-macOS.zip`, and `Flip-Clock-Linux.zip` in `releases/`. Build the screensaver first when preparing the complete Windows product.
-
-### Build the Windows installer
-
-On Windows, extract **Microsoft.Web.WebView2 1.0.4191.47** from NuGet into `tools/screensaver/sdk`, then run:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File tools/Build-Screensaver.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File tools/Package.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File tools/Build-Setup.ps1
-```
-
-The output is **`releases/FlipClock-Setup.exe`**. Run it with `/verify` to extract and validate its embedded payload without installing or changing Windows settings:
-
-```powershell
-Start-Process -FilePath .\releases\FlipClock-Setup.exe -ArgumentList /verify -Wait
-```
-
-### Publish a release
-
-Update `RELEASE_NOTES.md` and the version attributes in `tools/setup/Setup.cs`, then commit and push your changes. Create and push a new version tag, replacing the example with the intended version:
-
-```sh
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-The release workflow builds and verifies the Windows installer, then publishes **FlipClock-Setup.exe** and **SHA256SUMS.txt**. GitHub also supplies source archives. The workflow currently publishes the Windows installer; macOS and Linux can be installed from the source folders above.
+Re-run your platform's installer from a newer download to update. More installation details: [Windows](Windows/README.md) · [macOS](macOS/README.md) · [Linux](Linux/README.md).
