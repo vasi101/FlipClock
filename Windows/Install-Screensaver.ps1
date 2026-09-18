@@ -1,10 +1,18 @@
 $ErrorActionPreference = 'Stop'
-& (Join-Path $PSScriptRoot 'Install.ps1')
 $appDirectory = Join-Path $env:LOCALAPPDATA 'Programs\Flip Clock'
-$files = @('FlipClock.scr','Microsoft.Web.WebView2.Core.dll','Microsoft.Web.WebView2.WinForms.dll','WebView2Loader.dll','Remove-Screensaver.ps1')
+$files = @('FlipClock.scr','Microsoft.Web.WebView2.Core.dll','Microsoft.Web.WebView2.WinForms.dll','WebView2Loader.dll','Remove-Screensaver.ps1','WebView2-LICENSE.txt','WebView2-NOTICE.txt')
 foreach ($file in $files) {
     $source = Join-Path $PSScriptRoot $file
     if (-not (Test-Path -LiteralPath $source)) { throw "Missing screensaver file: $file" }
+}
+# Ask the bundled WebView2 SDK to detect the installed runtime before changing anything.
+Add-Type -Path (Join-Path $PSScriptRoot 'Microsoft.Web.WebView2.Core.dll')
+try { $runtimeVersion = [Microsoft.Web.WebView2.Core.CoreWebView2Environment]::GetAvailableBrowserVersionString() }
+catch { throw 'Install Microsoft Edge WebView2 Runtime from https://developer.microsoft.com/microsoft-edge/webview2/ and run setup again.' }
+if (-not $runtimeVersion) { throw 'Microsoft Edge WebView2 Runtime is required. Install it and run setup again.' }
+& (Join-Path $PSScriptRoot 'Install.ps1')
+foreach ($file in $files) {
+    $source = Join-Path $PSScriptRoot $file
     Copy-Item -LiteralPath $source -Destination $appDirectory -Force
 }
 $key = 'HKCU:\Control Panel\Desktop'

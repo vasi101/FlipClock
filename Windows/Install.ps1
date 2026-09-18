@@ -9,7 +9,7 @@ $edgeCandidates = @(
 )
 $edge = $edgeCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 if (-not $edge) { throw 'Microsoft Edge is required to install Flip Clock in its own app window.' }
-$files = @('index.html', 'style.css', 'app.js', 'timer.js', 'background.js', 'icon.ico', 'icon.svg', 'icon.png', 'Start Flip Clock.cmd', 'Uninstall.ps1')
+$files = @('index.html', 'style.css', 'app.js', 'timer.js', 'background.js','awake.js', 'icon.ico', 'icon.svg', 'icon.png', 'Start Flip Clock.cmd', 'Uninstall.ps1')
 foreach ($file in $files) {
     if (-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot $file))) { throw "Missing installation file: $file" }
 }

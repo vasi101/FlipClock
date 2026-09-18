@@ -5,11 +5,11 @@ source_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 data_dir=${XDG_DATA_HOME:-"$HOME/.local/share"}
 case "$data_dir" in /*) ;; *) printf '%s\n' 'XDG_DATA_HOME must be an absolute path.' >&2; exit 1;; esac
 app_dir="$data_dir/flip-clock"
-for file in index.html style.css app.js timer.js background.js icon.svg icon.png icon.ico launch-unix.sh; do
+for file in index.html style.css app.js timer.js background.js awake.js icon.svg icon.png icon.ico launch-unix.sh; do
     [ -f "$source_dir/$file" ] || { printf 'Missing file: %s\n' "$file" >&2; exit 1; }
 done
 mkdir -p "$app_dir" "$data_dir/applications"
-for file in index.html style.css app.js timer.js background.js icon.svg icon.png icon.ico launch-unix.sh; do
+for file in index.html style.css app.js timer.js background.js awake.js icon.svg icon.png icon.ico launch-unix.sh; do
     cp "$source_dir/$file" "$app_dir/$file"
 done
 chmod +x "$app_dir/launch-unix.sh"

@@ -1,27 +1,16 @@
-# Flip Clock v1.0.0
+﻿# Flip Clock v1.0.0
 
-Offline flip clock with standalone packages for Windows, Linux, and macOS.
+Download **FlipClock-Setup.exe** and double-click it to install both Flip Clock and its Windows screensaver. No ZIP extraction or administrator access is required.
 
 - Ten clock themes and ten built-in wallpapers.
 - Custom image backgrounds with adjustable glass cards.
 - 12/24-hour time, optional seconds and date, fullscreen, and saved preferences.
 - Countdown timer with pause/resume, optional alarm, and tick-tock sound.
-- Windows x64 screensaver with multiple-display support and secure resume.
+- Windows x64 screensaver with multiple-display support.
+- Desktop and Start menu shortcuts, screensaver configuration, and an uninstaller for both components.
 
-## Downloads
+Setup enables the screensaver after five minutes (or your existing shorter delay) and requires sign-in on resume. It preserves the previous screensaver selection for uninstall.
 
-Download the ZIP for your operating system and extract it before installing:
+Requires Windows x64, Microsoft Edge, WebView2 Runtime, and .NET Framework 4.6.2 or newer. Setup checks for Edge and WebView2 before installing. This installer is unsigned. Full installation and screensaver dismissal/sign-in still need an interactive test. Keep the clock open and the computer awake for timely timer alarms.
 
-| Asset | Installation |
-| --- | --- |
-| `Flip-Clock-Windows.zip` | Open `Windows/Install Flip Clock.cmd`, or `Windows/Install Screensaver.cmd` for the screensaver. |
-| `Flip-Clock-Linux.zip` | In `Linux`, run `sh install-linux.sh`. |
-| `Flip-Clock-macOS.zip` | In `macOS`, run `sh "Install macOS.command"`. |
-
-`SHA256SUMS.txt` contains checksums for the three ZIP files.
-
-## Requirements and known limitations
-
-The regular clock uses an installed browser. The Windows screensaver requires Windows x64, Microsoft Edge WebView2 Runtime, and .NET Framework 4.6.2 or newer. Its installer enables sign-in on resume.
-
-Linux/macOS native launch testing and the Windows screensaver's full-screen dismissal/sign-in test remain outstanding. The macOS app is not signed or notarized. Keep the clock open and the computer awake for timely timer alarms.
+`SHA256SUMS.txt` contains the installer checksum. The automatically generated source-code archives are for developers; use the EXE to install the product.

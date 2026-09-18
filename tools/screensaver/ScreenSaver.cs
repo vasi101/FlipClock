@@ -98,7 +98,7 @@ sealed class ClockForm : Form {
             view.CoreWebView2.IsMuted = saver || preview != IntPtr.Zero;
             view.CoreWebView2.NewWindowRequested += delegate(object s, CoreWebView2NewWindowRequestedEventArgs e) { e.Handled = true; };
             if (saver || preview != IntPtr.Zero || test) {
-                await view.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("addEventListener('DOMContentLoaded',()=>{const s=document.createElement('style');s.textContent='.toolbar,.settings,.timer-badge,.audio-status,#notice{display:none!important}body,*{cursor:none!important}';document.head.append(s);});");
+                await view.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.flipClockScreensaver=true;addEventListener('DOMContentLoaded',()=>{const s=document.createElement('style');s.textContent='.toolbar,.settings,.timer-badge,.audio-status,#notice{display:none!important}body,*{cursor:none!important}';document.head.append(s);});");
             }
             view.CoreWebView2.NavigationCompleted += async delegate(object s, CoreWebView2NavigationCompletedEventArgs e) {
                 if (!test) return;

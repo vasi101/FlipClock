@@ -35,11 +35,14 @@ jobs:
         run: |
           Invoke-WebRequest 'https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/1.0.4191.47/microsoft.web.webview2.1.0.4191.47.nupkg' -OutFile tools/screensaver/webview2.zip
           Expand-Archive tools/screensaver/webview2.zip tools/screensaver/sdk -Force
-      - name: Build screensaver and packages
+      - name: Build Windows product installer
         run: |
           ./tools/Build-Screensaver.ps1
           ./tools/Package.ps1
-          Get-ChildItem releases/Flip-Clock-*.zip | Sort-Object Name | ForEach-Object {
+          ./tools/Build-Setup.ps1
+          $verification = Start-Process releases/FlipClock-Setup.exe -ArgumentList /verify -Wait -PassThru -WindowStyle Hidden
+          if ($verification.ExitCode) { throw 'Setup payload verification failed.' }
+          Get-Item releases/FlipClock-Setup.exe | Sort-Object Name | ForEach-Object {
             '{0}  {1}' -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
           } | Set-Content releases/SHA256SUMS.txt -Encoding ascii
       - name: Publish GitHub release
@@ -47,5 +50,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          gh release create "$env:RELEASE_TAG" releases/Flip-Clock-Windows.zip releases/Flip-Clock-Linux.zip releases/Flip-Clock-macOS.zip releases/SHA256SUMS.txt --verify-tag --title "Flip Clock $env:RELEASE_TAG" --notes-file RELEASE_NOTES.md
+          gh release create "$env:RELEASE_TAG" releases/FlipClock-Setup.exe releases/SHA256SUMS.txt --verify-tag --title "Flip Clock $env:RELEASE_TAG" --notes-file RELEASE_NOTES.md
           if ($LASTEXITCODE) { exit $LASTEXITCODE }

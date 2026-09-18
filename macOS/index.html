@@ -46,6 +46,8 @@
     <label>Show date <input id="show-date" type="checkbox" role="switch"></label>
     <label>Flip animation <input id="animate" type="checkbox" role="switch"></label>
     <label>Tick-tock sound <input id="tick-sound" type="checkbox" role="switch"></label>
+    <label>Keep awake in fullscreen <input id="keep-awake" type="checkbox" role="switch" checked></label>
+    <p id="wake-status" role="status">Requesting keep-awake…</p>
     <label>Sound volume <input id="sound-volume" type="range" min="0" max="100" step="5" aria-label="Sound volume"></label>
     <label class="size-label" for="size">Clock size <input id="size" type="range" min="60" max="120" step="5"></label>
     <p>Your local time. A little less distraction.</p>
@@ -71,5 +73,6 @@
   <script src="app.js"></script>
   <script src="timer.js"></script>
   <script src="background.js"></script>
+  <script src="awake.js"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@ foreach ($name in @('Configure Flip Clock Screensaver.lnk','Windows Screen Saver
 foreach ($path in @($desktopShortcut, (Join-Path $menuDirectory 'Flip Clock.lnk'), (Join-Path $menuDirectory 'Uninstall Flip Clock.lnk'))) {
     if (Test-Path -LiteralPath $path) { Remove-Item -LiteralPath $path -Force }
 }
-foreach ($file in @('index.html', 'style.css', 'app.js', 'timer.js', 'background.js', 'icon.ico', 'icon.svg', 'icon.png', 'Start Flip Clock.cmd', 'Uninstall.ps1', 'FlipClock.scr', 'Microsoft.Web.WebView2.Core.dll', 'Microsoft.Web.WebView2.WinForms.dll', 'WebView2Loader.dll', 'Remove-Screensaver.ps1', 'previous-screensaver.json')) {
+foreach ($file in @('index.html', 'style.css', 'app.js', 'timer.js', 'background.js','awake.js', 'icon.ico', 'icon.svg', 'icon.png', 'Start Flip Clock.cmd', 'Uninstall.ps1', 'FlipClock.scr', 'Microsoft.Web.WebView2.Core.dll', 'Microsoft.Web.WebView2.WinForms.dll', 'WebView2Loader.dll', 'Remove-Screensaver.ps1', 'previous-screensaver.json', 'WebView2-LICENSE.txt', 'WebView2-NOTICE.txt')) {
     $path = Join-Path $appDirectory $file
     if (Test-Path -LiteralPath $path) { Remove-Item -LiteralPath $path -Force }
 }
