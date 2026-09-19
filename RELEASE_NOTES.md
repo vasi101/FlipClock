@@ -1,4 +1,4 @@
-﻿# Flip Clock v1.0.0
+# Flip Clock v1.1.0
 
 Download **FlipClock-Setup.exe** and double-click it to install both Flip Clock and its Windows screensaver. No ZIP extraction or administrator access is required.
 
