@@ -76,7 +76,7 @@ Move the pointer to reveal the toolbar after it fades.
 
 ## Installation
 
-The regular clock runs locally in a browser on **Windows, macOS, and Linux**. Platform launchers provide an app window where supported; the macOS and Linux versions may open the default browser. The screensaver is available on Windows only.
+Flip Clock includes a **standalone app for Windows, macOS, and Linux**. Each release bundles everything needed to open the clock in its own window, without an installed browser or build tools. The screensaver is available on Windows only. Download the platform packages from Releases after the first bundled-app release is published; the source-code ZIP does not include compiled apps.
 
 ### Windows
 
@@ -84,36 +84,35 @@ The regular clock runs locally in a browser on **Windows, macOS, and Linux**. Pl
 2. Double-click the installer and follow the prompts. No administrator access is needed.
 3. Open **Flip Clock** from your desktop or Start menu.
 
-Requires Windows x64, Microsoft Edge, WebView2 Runtime, and .NET Framework 4.6.2 or newer. Setup installs both the clock and screensaver, enables the screensaver after five minutes (or your existing shorter delay), and enables sign-in on resume.
+Requires Windows x64. The screensaver additionally requires WebView2 Runtime and .NET Framework 4.6.2 or newer. Setup installs both the standalone clock and screensaver, enables the screensaver after five minutes (or your existing shorter delay), and enables sign-in on resume.
+
+For the clock alone, download **Flip-Clock-Windows.zip**, extract it completely, and double-click **Install Flip Clock.cmd**. You can also run **Start Flip Clock.cmd** directly from the extracted folder. The regular clock does not require Edge or WebView2.
 
 Use **Configure Flip Clock Screensaver** in the Start menu to choose its appearance. To uninstall, choose **Uninstall Flip Clock**.
 
 ### macOS
 
-1. On the [project page](https://github.com/vasi101/FlipClock), choose **Code → Download ZIP**, then extract the download.
-2. Open Terminal in the extracted project folder and run:
+1. Download **Flip-Clock-macOS.zip** from [Releases](https://github.com/vasi101/FlipClock/releases) after the first standalone macOS release is published. It supports both **Apple Silicon and Intel Macs**.
+2. Extract the entire ZIP and double-click **Install macOS.command**.
+3. Open **Flip Clock.app** from `~/Applications`. The installer also attempts to open it for you.
 
-   ```sh
-   cd macOS
-   sh "Install macOS.command"
-   ```
+No browser, Node.js, build tools, or administrator access is needed. The source-code ZIP does not include the compiled app.
 
-3. Open **Flip Clock.app** from `~/Applications`.
+The app is **not Developer ID signed or notarized**. macOS may require you to approve the app or installer in **System Settings → Privacy & Security → Open Anyway**, when that option is offered.
 
-Chrome, Edge, Brave, or Chromium opens the clock in a dedicated app window; otherwise it opens in your default browser. No administrator access is needed. To uninstall, move `~/Applications/Flip Clock.app` to Trash.
+Quit Flip Clock with **Command-Q** before updating. The installer backs up an existing copy. To uninstall, move `~/Applications/Flip Clock.app` to Trash. [More macOS installation details](macOS/README.md).
 
 ### Linux
 
-1. On the [project page](https://github.com/vasi101/FlipClock), choose **Code → Download ZIP**, then extract the download.
-2. Open a terminal in the extracted project folder and run:
+1. Download **Flip-Clock-Linux.zip** from [Releases](https://github.com/vasi101/FlipClock/releases) and extract it completely. This package is for **x64 Linux desktops**.
+2. Open a terminal in the extracted `Linux` folder and run:
 
    ```sh
-   cd Linux
    sh install-linux.sh
    ```
 
 3. Open **Flip Clock** from your application menu.
 
-Chrome, Chromium, Edge, or Brave opens a dedicated app window; otherwise the clock opens in your default browser. No administrator access is needed. To uninstall, remove `~/.local/share/flip-clock` and `~/.local/share/applications/flip-clock.desktop`, or their equivalents under your custom `XDG_DATA_HOME`.
+The app opens in its own window. No browser or administrator access is needed for the user installation; standard desktop libraries and working Chromium sandbox support are required. Close Flip Clock before updating. To uninstall, remove `~/.local/share/flip-clock` and `~/.local/share/applications/flip-clock.desktop`, or their equivalents under your custom `XDG_DATA_HOME`. Update backups are kept in `flip-clock-backups` under the same data directory.
 
 Re-run your platform's installer from a newer download to update. More installation details: [Windows](Windows/README.md) · [macOS](macOS/README.md) · [Linux](Linux/README.md).

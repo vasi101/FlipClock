@@ -1,36 +1,63 @@
 #!/bin/sh
 set -eu
-if [ "$(uname -s)" != Darwin ]; then printf '%s\n' 'Run this installer on macOS.' >&2; exit 1; fi
+
+if [ "$(uname -s)" != Darwin ]; then
+    printf '%s\n' 'Run this installer on macOS.' >&2
+    exit 1
+fi
 source_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-app_dir="$HOME/Applications/Flip Clock.app"
-for file in index.html style.css app.js timer.js background.js awake.js icon.svg icon.png icon.ico icon.icns launch-unix.sh; do
-    [ -f "$source_dir/$file" ] || { printf 'Missing file: %s\n' "$file" >&2; exit 1; }
-done
-mkdir -p "$app_dir/Contents/MacOS" "$app_dir/Contents/Resources"
-for file in index.html style.css app.js timer.js background.js awake.js icon.svg icon.png icon.ico icon.icns launch-unix.sh; do
-    cp "$source_dir/$file" "$app_dir/Contents/Resources/$file"
-done
-cat > "$app_dir/Contents/MacOS/FlipClock" <<'EOF'
-#!/bin/sh
-set -eu
-contents_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-exec /bin/sh "$contents_dir/Resources/launch-unix.sh"
-EOF
-chmod +x "$app_dir/Contents/MacOS/FlipClock" "$app_dir/Contents/Resources/launch-unix.sh"
-cat > "$app_dir/Contents/Info.plist" <<'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0"><dict>
-<key>CFBundleName</key><string>Flip Clock</string>
-<key>CFBundleDisplayName</key><string>Flip Clock</string>
-<key>CFBundleIdentifier</key><string>local.flipclock.app</string>
-<key>CFBundleVersion</key><string>1</string>
-<key>CFBundleShortVersionString</key><string>1.0</string>
-<key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleExecutable</key><string>FlipClock</string>
-<key>CFBundleIconFile</key><string>icon.icns</string>
-<key>LSUIElement</key><true/>
-</dict></plist>
-EOF
-touch "$app_dir"
-printf '%s\n' "Installed: $app_dir" 'Open Flip Clock from your user Applications folder.' 'Chrome, Edge, Brave, or Chromium opens a dedicated app window; otherwise your default browser opens.'
+payload="$source_dir/Flip Clock.app"
+install_home=${FLIP_CLOCK_INSTALL_HOME:-"$HOME"}
+case "$install_home" in /*) ;; *) printf '%s\n' 'The installation home must be an absolute path.' >&2; exit 1;; esac
+applications="$install_home/Applications"
+destination="$applications/Flip Clock.app"
+
+if [ ! -f "$payload/Contents/Resources/app.asar" ] || [ ! -x "$payload/Contents/MacOS/Flip Clock" ]; then
+    printf '%s\n' 'The bundled Flip Clock.app is missing or incomplete.' \
+        'Download Flip-Clock-macOS.zip from GitHub Releases and extract the entire archive first.' \
+        'The source-code ZIP does not contain the built app.' >&2
+    exit 1
+fi
+if [ -L "$destination" ]; then
+    printf '%s\n' 'The installation destination is a symbolic link. Move it aside before installing.' >&2
+    exit 1
+fi
+if /usr/bin/pgrep -f '/Flip Clock.app/Contents/MacOS/' >/dev/null 2>&1; then
+    printf '%s\n' 'Quit Flip Clock with Command-Q, then run the installer again.' >&2
+    exit 1
+fi
+mkdir -p "$applications"
+if [ "$(CDPATH= cd -- "$source_dir" && pwd -P)/Flip Clock.app" = "$destination" ]; then
+    printf '%s\n' 'Flip Clock is already in your Applications folder.'
+    exit 0
+fi
+
+stage=$(/usr/bin/mktemp -d "$applications/.flip-clock-install.XXXXXX")
+backup=''
+rollback() {
+    if [ ! -e "$destination" ] && [ -n "$backup" ] && [ -d "$backup" ]; then
+        /bin/mv "$backup" "$destination"
+    fi
+}
+trap rollback EXIT
+/usr/bin/ditto "$payload" "$stage/Flip Clock.app"
+/usr/bin/codesign --verify --deep --strict "$stage/Flip Clock.app"
+if [ -e "$destination" ]; then
+    backup_parent="$install_home/Library/Application Support/Flip Clock/Installation Backups"
+    mkdir -p "$backup_parent"
+    backup_dir=$(/usr/bin/mktemp -d "$backup_parent/previous.XXXXXX")
+    backup="$backup_dir/Flip Clock.app"
+    /bin/mv "$destination" "$backup"
+fi
+/bin/mv "$stage/Flip Clock.app" "$destination"
+/bin/rmdir "$stage"
+trap - EXIT
+printf '\nInstalled: %s\n' "$destination"
+if [ -n "$backup" ]; then printf 'Previous app saved to: %s\n' "$backup"; fi
+printf '%s\n' 'This app is not Developer ID signed or notarized.' \
+    'macOS may require approval in System Settings > Privacy & Security before it opens.' \
+    'No security settings or quarantine attributes have been changed.'
+if [ "${FLIP_CLOCK_NO_LAUNCH:-0}" = 1 ]; then exit 0; fi
+if ! /usr/bin/open "$destination"; then
+    printf '%s\n' 'Installation finished. Open Flip Clock from your user Applications folder after approving it in macOS.'
+fi

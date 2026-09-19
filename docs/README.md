@@ -1,25 +1,25 @@
 # Flip Clock
 
-A quiet, offline flip clock for Windows, Linux, and macOS, inspired by the provided reference. No account or internet connection required. The lightweight installers use your existing browser rather than bundling a browser runtime.
+A quiet, offline flip clock for Windows, Linux, and macOS. Each platform release includes a standalone app. No account, installed browser, or internet connection is required after download.
 
 ## Install on Linux or macOS
 
-Extract the entire `Flip-Clock-Portable.zip` archive first, then open a terminal in the extracted folder.
+Download the appropriate platform ZIP from Releases and extract it completely. For Linux, open a terminal in the extracted `Linux` folder. For macOS, open the extracted `Flip Clock macOS` folder.
 
 - **Linux:** run `sh install-linux.sh`. Open Flip Clock from the application menu. Installs to `${XDG_DATA_HOME:-$HOME/.local/share}/flip-clock` with a `.desktop` launcher in its sibling `applications` directory.
-- **macOS:** run `sh "Install macOS.command"`. Open `~/Applications/Flip Clock.app` in Finder. This creates a local app bundle with its own icon. It is not a signed/notarized DMG or App Store package.
+- **macOS:** double-click `Install macOS.command`, or run `sh "Install macOS.command"` in Terminal. It copies the bundled standalone app to `~/Applications/Flip Clock.app`. No browser is required. The app is not Developer ID signed or notarized; macOS may require approval in Privacy & Security. See the [macOS installation guide](../macOS/README.md).
 
-Chrome, Chromium, Edge, or Brave provides a dedicated app window. With other browsers, the launcher opens the clock as a normal browser page; use the fullscreen button. Browser window/taskbar branding can still use the browser's icon. No administrator privileges are needed. Re-run the installer to update. Linux/macOS installer syntax is checked, but native launch testing still needs those operating systems.
+No administrator privileges are needed for user installation. Linux requires standard desktop libraries and working Chromium sandbox support. Quit the app before re-running an installer to update. Native user interactions still need testing on their target operating systems.
 
-To uninstall on macOS, move `~/Applications/Flip Clock.app` to Trash. On Linux, move the installed `flip-clock` folder and `applications/flip-clock.desktop` launcher to Trash. Browser preferences and custom image storage remain until cleared in the browser.
+To uninstall on macOS, move `~/Applications/Flip Clock.app` to Trash. On Linux, move the installed `flip-clock` folder and `applications/flip-clock.desktop` launcher to Trash. Saved preferences, custom images, and update backups remain until removed separately.
 
 Installer structure references: [Desktop Entry specification](https://specifications.freedesktop.org/desktop-entry/latest/exec-variables.html) and [Apple bundle structure](https://developer.apple.com/library/archive/documentation/CoreFoundation/Conceptual/CFBundles/BundleTypes/BundleTypes.html).
 
 ## Windows
 
-To install, double-click **Install Flip Clock.cmd**. This copies the app to `%LOCALAPPDATA%\Programs\Flip Clock` and adds desktop and Start menu shortcuts. No administrator access is needed. Microsoft Edge provides the app window. To remove it, choose **Uninstall Flip Clock** in its Start menu folder. Run the installer again to update the installed copy.
+Extract **Flip-Clock-Windows.zip**, then double-click **Install Flip Clock.cmd**. This copies the standalone app to `%LOCALAPPDATA%\Programs\Flip Clock` and adds desktop and Start menu shortcuts. No administrator access or browser is needed. To remove it, choose **Uninstall Flip Clock** in its Start menu folder. Close the app before running the installer again to update.
 
-Double-click **Start Flip Clock.cmd** to open the clock in a standalone Microsoft Edge window. If Edge is not found, it opens in your default browser. You can also open **index.html** directly.
+Double-click **Start Flip Clock.cmd** to open the bundled app directly from the extracted release folder. It runs `app/Flip Clock.exe`.
 
 - **F**: toggle fullscreen (or use the fullscreen button)
 - **S**: open settings
@@ -40,11 +40,11 @@ Use the toolbar's timer button for a countdown up to 99:59:59, with quick preset
 
 For a desktop shortcut, right-click `Start Flip Clock.cmd`, select **Show more options → Send to → Desktop (create shortcut)**.
 
-The regular clock is a local browser app. Close the window with Alt+F4. It respects the system's reduced-motion preference.
+The regular clock is a standalone app. Close the window with Alt+F4. It respects the system's reduced-motion preference.
 
 ## Windows screensaver
 
-The separate `Flip-Clock-Screensaver-Windows.zip` package includes a compiled Windows x64 `.scr` screensaver. Extract it and run **Install Screensaver.cmd**. It requires the Microsoft Edge WebView2 Runtime and .NET Framework 4.6.2 or newer. The installer enables secure resume and uses five minutes or your existing shorter idle delay. It does not change display-off or sleep settings.
+The `Flip-Clock-Windows.zip` package includes a compiled Windows x64 `.scr` screensaver. Extract it and run **Install Screensaver.cmd**. The screensaver requires Microsoft Edge WebView2 Runtime and .NET Framework 4.6.2 or newer. The installer enables secure resume and uses five minutes or your existing shorter idle delay. It does not change display-off or sleep settings.
 
 Open **Configure Flip Clock Screensaver** in the Start menu, press **S**, and select its theme and image. This uses a separate WebView2 profile, so choose your wallpaper once here even if you already chose one in the Edge app. Close the configuration window when finished. **Windows Screen Saver Settings** in the same Start menu folder lets you adjust the delay and preview it.
 

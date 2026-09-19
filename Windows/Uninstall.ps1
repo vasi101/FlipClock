@@ -1,8 +1,41 @@
+param(
+    [string]$InstallBase = $env:LOCALAPPDATA,
+    [string]$DesktopPath = [Environment]::GetFolderPath('Desktop'),
+    [string]$ProgramsPath = [Environment]::GetFolderPath('Programs')
+)
 $ErrorActionPreference = 'Stop'
-$appDirectory = [IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'Programs\Flip Clock'))
+$appDirectory = [IO.Path]::GetFullPath((Join-Path $InstallBase 'Programs\Flip Clock'))
 if ([IO.Path]::GetFullPath($PSScriptRoot) -ne $appDirectory) { throw 'Run the installed uninstaller from the Start menu.' }
-$menuDirectory = Join-Path ([Environment]::GetFolderPath('Programs')) 'Flip Clock'
-$desktopShortcut = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Flip Clock.lnk'
+$menuDirectory = Join-Path $ProgramsPath 'Flip Clock'
+$desktopShortcut = Join-Path $DesktopPath 'Flip Clock.lnk'
+$runtimeDirectory = Join-Path $appDirectory 'app'
+$installedExecutable = Join-Path $runtimeDirectory 'Flip Clock.exe'
+if (Get-Process -Name 'Flip Clock' -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $installedExecutable }) { throw 'Close Flip Clock before uninstalling.' }
+# Remove only manifested runtime files, preserving any files added by the user.
+$manifest = Join-Path $appDirectory 'runtime-files.json'
+if (Test-Path -LiteralPath $manifest) {
+    $runtimeFiles = Get-Content -LiteralPath $manifest -Raw | ConvertFrom-Json
+    if (Test-Path -LiteralPath $runtimeDirectory) {
+        $items = @((Get-Item -LiteralPath $runtimeDirectory)) + @(Get-ChildItem -LiteralPath $runtimeDirectory -Recurse -Force)
+        if ($items | Where-Object { $_.Attributes -band [IO.FileAttributes]::ReparsePoint }) { throw 'Refusing to uninstall through a symbolic link in the app folder.' }
+    }
+    $paths = foreach ($file in $runtimeFiles) {
+        if ($file -isnot [string] -or [string]::IsNullOrWhiteSpace($file)) { throw 'Invalid runtime manifest entry.' }
+        $target = [IO.Path]::GetFullPath((Join-Path $runtimeDirectory $file))
+        if (-not $target.StartsWith($runtimeDirectory + '\', [StringComparison]::OrdinalIgnoreCase)) { throw 'Invalid runtime manifest path.' }
+        $target
+    }
+    foreach ($target in $paths) {
+        if (Test-Path -LiteralPath $target -PathType Leaf) { Remove-Item -LiteralPath $target -Force }
+    }
+    if (Test-Path -LiteralPath $runtimeDirectory) {
+        $directories = @(Get-ChildItem -LiteralPath $runtimeDirectory -Directory -Recurse | Sort-Object { $_.FullName.Length } -Descending | Select-Object -ExpandProperty FullName) + @($runtimeDirectory)
+        foreach ($directory in $directories) {
+            if (-not (Get-ChildItem -LiteralPath $directory -Force)) { Remove-Item -LiteralPath $directory }
+        }
+    }
+    Remove-Item -LiteralPath $manifest -Force
+}
 if (Test-Path -LiteralPath (Join-Path $appDirectory 'Remove-Screensaver.ps1')) { & (Join-Path $appDirectory 'Remove-Screensaver.ps1') }
 foreach ($name in @('Configure Flip Clock Screensaver.lnk','Windows Screen Saver Settings.lnk')) {
     $shortcutPath = Join-Path $menuDirectory $name
@@ -19,4 +52,4 @@ foreach ($file in @('index.html', 'style.css', 'app.js', 'timer.js', 'background
 foreach ($directory in @($appDirectory, $menuDirectory)) {
     if ((Test-Path -LiteralPath $directory) -and -not (Get-ChildItem -LiteralPath $directory -Force)) { Remove-Item -LiteralPath $directory }
 }
-Write-Host 'Flip Clock uninstalled. Browser preferences have been preserved.'
+Write-Host 'Flip Clock uninstalled. Saved preferences and runtime backups have been preserved.'

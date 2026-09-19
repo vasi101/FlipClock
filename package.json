@@ -1,0 +1,21 @@
+{
+  "name": "flip-clock",
+  "productName": "Flip Clock",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An offline flip clock with themes, wallpapers, and a countdown timer",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node tests/verify.cjs && node tests/verify-background.cjs && node tests/verify-timer.cjs && node tests/verify-awake.cjs && node tests/verify-electron.cjs",
+    "test:electron": "electron . --smoke-test",
+    "package:mac": "node tools/Package-Mac.mjs",
+    "package:win": "node tools/Package-Electron.mjs win32",
+    "package:linux": "node tools/Package-Electron.mjs linux"
+  },
+  "engines": { "node": ">=22.12.0" },
+  "devDependencies": {
+    "@electron/packager": "20.3.0",
+    "electron": "44.4.3"
+  }
+}

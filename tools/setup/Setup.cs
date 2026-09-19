@@ -22,7 +22,7 @@ internal static class Setup
         if (verify) { try { Run(true); return 0; } catch { return 1; } }
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-        if (MessageBox.Show("Install Flip Clock and its screensaver for your Windows account?\n\nSetup adds desktop and Start menu shortcuts and enables the screensaver after five minutes (or your existing shorter delay), with sign-in required on resume.\n\nMicrosoft Edge and WebView2 Runtime are required.", "Flip Clock Setup", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) != DialogResult.OK) return 0;
+        if (MessageBox.Show("Install Flip Clock and its screensaver for your Windows account?\n\nSetup adds desktop and Start menu shortcuts and enables the screensaver after five minutes (or your existing shorter delay), with sign-in required on resume.\n\nThe clock is standalone. WebView2 Runtime is required for the screensaver.", "Flip Clock Setup", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) != DialogResult.OK) return 0;
         int result = 0;
         using (var form = new Form { Text = "Flip Clock Setup", ClientSize = new Size(420, 110), StartPosition = FormStartPosition.CenterScreen, FormBorderStyle = FormBorderStyle.FixedDialog, MaximizeBox = false, MinimizeBox = false, ControlBox = false })
         {
@@ -56,6 +56,9 @@ internal static class Setup
             using (var archive = new ZipArchive(payload, ZipArchiveMode.Read)) { archive.ExtractToDirectory(directory); }
             string windows = Path.Combine(directory, "Windows");
             foreach (string file in new[] { "Install.ps1", "Install-Screensaver.ps1", "Uninstall.ps1", "Remove-Screensaver.ps1", "index.html", "app.js", "background.js", "timer.js", "style.css", "icon.ico", "icon.png", "icon.svg", "Start Flip Clock.cmd", "FlipClock.scr", "Microsoft.Web.WebView2.Core.dll", "Microsoft.Web.WebView2.WinForms.dll", "WebView2Loader.dll", "WebView2-LICENSE.txt", "WebView2-NOTICE.txt" }) {
+                if (!File.Exists(Path.Combine(windows, file))) throw new IOException("Setup is missing " + file);
+            }
+            foreach (string file in new[] { "awake.js", "runtime-files.json", "app/Flip Clock.exe", "app/resources/app.asar" }) {
                 if (!File.Exists(Path.Combine(windows, file))) throw new IOException("Setup is missing " + file);
             }
             if (verify) return;
