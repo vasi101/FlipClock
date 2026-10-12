@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const releases = path.join(root, 'releases');
-export const clockFiles = ['index.html', 'style.css', 'app.js', 'timer.js', 'background.js', 'awake.js', 'icon.ico', 'icon.svg', 'icon.png'];
+export const clockFiles = ['index.html', 'style.css', 'app.js', 'timer.js', 'hourglass.js', 'background.js', 'awake.js', 'icon.ico', 'icon.svg', 'icon.png'];
 
 export async function buildElectron(platform) {
   if (process.platform !== platform) throw new Error(`Build ${platform} on a matching native runner.`);

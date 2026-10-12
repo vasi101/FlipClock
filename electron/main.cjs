@@ -51,13 +51,7 @@ function createWindow() {
 }
 
 app.whenReady().then(async () => {
-  const menu = [
-    ...(process.platform === "darwin" ? [{ role: "appMenu" }] : []),
-    { role: "editMenu" },
-    { label: "View", submenu: [{ role: "togglefullscreen" }] },
-    { role: "windowMenu" }
-  ];
-  Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
+  Menu.setApplicationMenu(null);
   await createWindow();
   if (smokeTest) {
     // Runs against the actual packaged renderer as well as the development app.

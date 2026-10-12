@@ -61,3 +61,73 @@ body[data-wallpaper=custom] .toolbar button:focus-visible{outline-color:var(--gl
 @keyframes glass-unfold{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
 @media(prefers-reduced-motion:reduce){.departing{display:none}.glass .is-flipping > .half:not(.flap):not(.departing){visibility:visible}}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){body[data-wallpaper=custom] .toolbar{background:rgba(var(--glass-tint,20,30,30),.88)}}
+.hourglass-enable{display:block;width:100%;padding:10px;border:1px solid #d8a15b66;border-radius:9px;color:#edc48c;margin-top:12px;font-size:13px}
+.hourglass-stage{position:fixed;inset:0;z-index:15;overflow:hidden;background:var(--background,#000);color:var(--ink)}
+.hourglass-stage[hidden]{display:none}
+.hourglass-motto{position:absolute;left:6vw;top:5.5vh;color:currentColor;opacity:.4;font-family:"Segoe UI",Arial,sans-serif;font-size:clamp(9px,1.15vw,15px);line-height:2;letter-spacing:.28em;text-transform:uppercase}
+.hourglass-motto i{display:block;width:32px;height:1px;background:currentColor;opacity:.35;margin-top:22px}
+.hourglass-focus-pill{position:absolute;right:5.5vw;top:5.5vh;height:44px;min-width:140px;border:1px solid currentColor;border-radius:28px;display:flex;gap:11px;align-items:center;justify-content:center;color:inherit;font-size:11px;letter-spacing:.18em;background:transparent;cursor:pointer;transition:background .2s;opacity:.7}
+.hourglass-focus-pill:hover{opacity:1;background:rgba(128,128,128,.1)}
+.hourglass-focus-pill svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.3}
+:root{--ring-color:var(--ink)}
+body[data-theme="midnight"]{--ring-color:#ff9f1c}
+body[data-theme="paper"]{--ring-color:#e65100}
+body[data-theme="ocean"]{--ring-color:#38bdf8}
+body[data-theme="forest"]{--ring-color:#4ade80}
+body[data-theme="lavender"]{--ring-color:#c084fc}
+body[data-theme="rose"]{--ring-color:#fb7185}
+body[data-theme="amber"]{--ring-color:#f59e0b}
+body[data-theme="espresso"]{--ring-color:#f97316}
+body[data-theme="ice"]{--ring-color:#0284c7}
+body[data-theme="mint"]{--ring-color:#10b981}
+#timer-ring{position:absolute;width:min(62vh,62vw);height:min(62vh,62vw);left:50%;top:50%;transform:translate(-50%,-50%);overflow:visible}
+#ring-track{fill:none;stroke:var(--ring-color,currentColor);stroke-width:10;opacity:.15}
+#ring-progress{fill:none;stroke:var(--ring-color,currentColor);stroke-width:10;stroke-linecap:round;stroke-dasharray:992.75 992.75;filter:drop-shadow(0 0 12px var(--ring-color,currentColor)) drop-shadow(0 0 4px var(--ring-color,currentColor));transition:opacity .15s}
+#ring-tip{fill:var(--ring-color,currentColor);filter:drop-shadow(0 0 9px var(--ring-color,currentColor));transition:opacity .15s}
+.ring-finished #timer-ring{animation:ring-pulse .85s ease-in-out infinite}
+.ring-finished #ring-track{opacity:.9;filter:drop-shadow(0 0 16px var(--ring-color,currentColor))}
+@keyframes ring-pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1}50%{transform:translate(-50%,-50%) scale(1.02);opacity:.4}}
+.hourglass-stage.is-warning{--ring-color:#ff3344}
+.hourglass-stage.is-warning #ring-track{opacity:.22}
+.hourglass-stage.is-warning #hourglass-display{color:#ff3344;text-shadow:0 0 24px rgba(255,51,68,.5)}
+.hourglass-copy{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;font-variant-numeric:tabular-nums;white-space:nowrap;z-index:10}
+#hourglass-display{font-size:clamp(48px,7vw,96px);font-weight:300;letter-spacing:.06em;line-height:1;cursor:pointer;pointer-events:auto;border-radius:14px;padding:4px 16px;transition:transform .18s,background .2s,opacity .18s}
+#hourglass-display:hover{transform:scale(1.04);background:rgba(128,128,128,.14);opacity:.95}
+.hourglass-copy small{pointer-events:none;display:flex;justify-content:space-between;width:130px;font-size:10px;letter-spacing:.35em;margin-top:10px;color:inherit;opacity:.55}
+.hourglass-modes{position:absolute;right:5.5vw;top:24vh;display:flex;flex-direction:column;align-items:flex-start;gap:20px;min-width:130px}
+.hourglass-modes button{display:flex;gap:14px;align-items:center;color:inherit;opacity:.5;font-size:11px;letter-spacing:.2em;padding:3px 0;background:transparent;border:none;cursor:pointer;transition:opacity .2s}
+.hourglass-modes button:hover{opacity:.75}
+.mode-dot{width:12px;height:12px;border:1px solid currentColor;border-radius:50%;box-sizing:border-box;flex-shrink:0}
+.hourglass-modes button.selected{opacity:1}
+.hourglass-modes button.selected .mode-dot{background:var(--ring-color,currentColor);box-shadow:0 0 10px var(--ring-color,currentColor)}
+.hourglass-controls{position:absolute;left:50%;bottom:5.5vh;transform:translateX(-50%);display:flex;align-items:center;gap:22px}
+.hourglass-controls button{width:50px;height:50px;border:1px solid currentColor;border-radius:50%;color:inherit;background:rgba(128,128,128,.08);display:grid;place-items:center;cursor:pointer;opacity:.7;transition:opacity .2s,background .2s}
+.hourglass-controls button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.hourglass-controls #hourglass-start{width:82px;height:82px;opacity:.95}
+.hourglass-controls #hourglass-start svg.play-icon{width:26px;height:26px;fill:currentColor;stroke:none}
+.hourglass-controls #hourglass-start svg.pause-icon{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.2}
+.hourglass-controls #hourglass-start .pause-icon{display:none}
+.hourglass-controls #hourglass-start.is-running .play-icon{display:none}
+.hourglass-controls #hourglass-start.is-running .pause-icon{display:block}
+.hourglass-controls button:hover{opacity:1;background:rgba(128,128,128,.18)}
+.hourglass-end-prompt{position:absolute;left:50%;bottom:2vh;transform:translateX(-50%);font-size:12px;letter-spacing:.08em;opacity:.72;text-align:center;white-space:nowrap}
+.hourglass-end-prompt[hidden]{display:none}
+.hourglass-config{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:30;display:grid;place-items:center;padding:20px;box-sizing:border-box}
+.hourglass-config[hidden]{display:none}
+.hourglass-config-inner{width:min(90vw,360px);background:var(--card,#202222);border:1px solid rgba(128,128,128,.28);border-radius:20px;padding:24px;color:var(--ink);box-shadow:0 24px 60px rgba(0,0,0,.75);box-sizing:border-box}
+.config-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.config-header h3{font-size:16px;font-weight:600;margin:0;letter-spacing:.05em}
+.config-header button{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:rgba(128,128,128,.15);border:none;color:inherit;font-size:20px;line-height:1;cursor:pointer;opacity:.7;transition:opacity .2s,background .2s}
+.config-header button:hover{opacity:1;background:rgba(128,128,128,.3)}
+.config-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.config-inputs label{min-width:0;display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.8;font-weight:600;text-align:center}
+.config-inputs input{width:100%;min-width:0;box-sizing:border-box;background:rgba(128,128,128,.12);border:1px solid rgba(128,128,128,.28);border-radius:12px;color:inherit;padding:12px 6px;font-size:24px;font-weight:600;text-align:center;font-variant-numeric:tabular-nums;outline:none;font-family:inherit;-moz-appearance:textfield}
+.config-inputs input::-webkit-outer-spin-button,.config-inputs input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.config-inputs input:focus{border-color:var(--ring-color,#ff9f1c);box-shadow:0 0 12px var(--ring-color,#ff9f1c)}
+.config-alarm{display:flex;align-items:center;gap:12px;font-size:13px;margin-bottom:22px;cursor:pointer;user-select:none;opacity:.9}
+.config-alarm input{width:18px;height:18px;accent-color:var(--ring-color,#ff9f1c);cursor:pointer}
+.config-apply{width:100%;padding:14px;border:none;border-radius:12px;background:var(--ring-color,#ff9f1c);color:#000;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:transform .15s,opacity .2s,filter .2s}
+.config-apply:hover{filter:brightness(1.1);transform:translateY(-1px)}
+body.hourglass-mode .clock-layout,body.hourglass-mode .toolbar{visibility:hidden}
+@media(max-width:700px){.hourglass-motto{left:5vw;top:3vh;font-size:8px}.hourglass-focus-pill{right:4vw;top:3vh;min-width:86px;height:34px;font-size:9px}.hourglass-modes{right:4vw;top:19vh;min-width:100px;gap:12px}.hourglass-modes button{font-size:9px;gap:9px}.mode-dot{width:10px;height:10px}#timer-ring{width:min(56vh,80vw);height:min(56vh,80vw)}.hourglass-copy small{width:100px;font-size:8px}.hourglass-controls{bottom:3vh;gap:12px}.hourglass-controls button{width:40px;height:40px}.hourglass-controls #hourglass-start{width:64px;height:64px}}
+@media(prefers-reduced-motion:reduce){.hourglass-stage *{animation:none!important;transition:none!important}}

@@ -68,6 +68,7 @@ function apply() {
   const selected = themes.find(item => item[0] === prefs.theme);
   for (const [key, value] of Object.entries({ "--card": selected[2], "--ink": selected[3], "--background": selected[4] })) document.documentElement.style.setProperty(key, value);
   document.body.dataset.wallpaper = prefs.wallpaper;
+  document.body.dataset.theme = prefs.theme;
   document.body.classList.toggle("has-wallpaper", prefs.wallpaper !== "none");
   globalThis.updateGlass?.();
   document.documentElement.style.colorScheme = ["paper", "ice", "mint"].includes(prefs.theme) ? "light" : "dark";

@@ -9,7 +9,7 @@ On macOS, download **Flip-Clock-macOS.zip**, extract it, and double-click **Inst
 - Ten clock themes and ten built-in wallpapers.
 - Custom image backgrounds with adjustable glass cards.
 - 12/24-hour time, optional seconds and date, fullscreen, and saved preferences.
-- Countdown timer with pause/resume, optional alarm, and tick-tock sound.
+- Countdown timer with a focus-ring view, blinking finish cue, pause/resume, optional alarm, and tick-tock sound. Press play to silence and reset a finished timer.
 - Windows x64 screensaver with multiple-display support.
 - Desktop and Start menu shortcuts, screensaver configuration, and an uninstaller for both components.
 

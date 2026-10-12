@@ -12,6 +12,14 @@
 </head>
 <body>
   <main aria-label="Flip clock">
+    <section id="hourglass-stage" class="hourglass-stage" aria-label="Hourglass focus timer" hidden>
+      <div class="hourglass-motto">SMALL STEPS<br>BUILD BIG<br>DREAMS<i></i></div>
+      <div class="hourglass-focus-pill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12M6 21h12M7 4c0 5 5 6 5 8s-5 3-5 8m10-16c0 5-5 6-5 8s5 3 5 8"/></svg>FOCUS</div>
+      <canvas id="hourglass-canvas" aria-hidden="true"></canvas>
+      <div class="hourglass-copy"><output id="hourglass-display">00:05</output><small><span>MIN</span><span>SEC</span></small></div>
+      <nav class="hourglass-modes" aria-label="Focus timer modes"><button class="selected" data-mode="focus">FOCUS</button><button data-mode="pomodoro">POMODORO</button><button data-mode="25min">25 MIN</button></nav>
+      <div id="hourglass-end-prompt" class="hourglass-end-prompt" role="status" aria-live="polite" hidden>Timer ended · Press play to stop the alarm</div>
+    </section>
     <div class="clock-layout">
     <header class="date-header" id="date-header"><div id="day"></div><div id="date"></div></header>
     <div class="clock" aria-hidden="true">
@@ -64,6 +72,7 @@
     <output id="timer-display" class="timer-display" aria-label="Time remaining">00:05:00</output>
     <div id="timer-status" role="status">Ready</div>
     <div class="timer-actions"><button id="timer-start">Start</button><button id="timer-reset">Reset</button><button id="timer-dismiss" hidden>Stop alarm</button></div>
+    <button id="hourglass-enable" class="hourglass-enable" type="button">Use cinematic hourglass</button>
     <label>Alarm when finished<input id="timer-alarm" type="checkbox" role="switch" checked></label>
     <p>Keep the app open and your PC awake to hear the alarm on time.</p>
   </section>
@@ -72,6 +81,7 @@
   <div id="notice" role="status"></div>
   <script src="app.js"></script>
   <script src="timer.js"></script>
+  <script src="hourglass.js"></script>
   <script src="background.js"></script>
   <script src="awake.js"></script>
 </body>

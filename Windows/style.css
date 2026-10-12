@@ -61,3 +61,35 @@ body[data-wallpaper=custom] .toolbar button:focus-visible{outline-color:var(--gl
 @keyframes glass-unfold{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
 @media(prefers-reduced-motion:reduce){.departing{display:none}.glass .is-flipping > .half:not(.flap):not(.departing){visibility:visible}}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){body[data-wallpaper=custom] .toolbar{background:rgba(var(--glass-tint,20,30,30),.88)}}
+.hourglass-enable{display:block;width:100%;padding:10px;border:1px solid #d8a15b66;border-radius:9px;color:#edc48c;margin-top:12px;font-size:13px}
+.hourglass-stage{position:fixed;inset:0;z-index:15;overflow:hidden;background:radial-gradient(ellipse at 50% 53%,#28221b 0,#111312 46%,#080a0a 100%);color:#f0d5b2}
+.hourglass-stage[hidden]{display:none}
+.hourglass-motto{position:absolute;left:6vw;top:5.5vh;color:#c0b2a2aa;font-family:Georgia,serif;font-size:clamp(10px,1.25vw,16px);line-height:1.9;letter-spacing:.25em}
+.hourglass-motto i{display:block;width:35px;height:1px;background:#c0b2a266;margin-top:27px}
+.hourglass-focus-pill{position:absolute;right:5.5vw;top:5.5vh;height:46px;min-width:148px;border:1px solid #b8a89244;border-radius:28px;display:flex;gap:12px;align-items:center;justify-content:center;color:#c9bba9;font-size:12px;letter-spacing:.15em}
+.hourglass-focus-pill svg{width:21px;height:21px;stroke:#cfb38e;stroke-width:1.3}
+#hourglass-canvas{position:absolute;height:100vh;width:min(57.15vh,76vw);left:50%;top:41%;transform:translate(-50%,-50%)}
+.hourglass-copy{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;text-shadow:0 2px 16px #000;font-variant-numeric:tabular-nums;pointer-events:none;white-space:nowrap}
+#hourglass-display{font-size:clamp(52px,8vw,104px);font-weight:300;letter-spacing:.055em;line-height:1}
+.hourglass-copy small{display:flex;justify-content:space-between;width:138px;font-size:11px;letter-spacing:.3em;margin-top:11px;color:#dec7a9}
+.hourglass-modes{position:absolute;right:5.5vw;top:22.5vh;display:flex;flex-direction:column;align-items:flex-start;gap:21px;min-width:150px}
+.hourglass-modes button{display:flex;gap:17px;align-items:center;color:#a9a19a;font-size:12px;letter-spacing:.18em;padding:3px 0}
+.hourglass-modes button:before{content:"";width:13px;height:13px;border:1px solid #aaa39a;border-radius:50%;box-sizing:border-box}
+.hourglass-modes button.selected{color:#f2eee9}
+.hourglass-modes button.selected:before{background:#f7b864;border-color:#f7b864;box-shadow:0 0 15px #f7b86488}
+.hourglass-controls{position:absolute;left:50%;bottom:5.5vh;transform:translateX(-50%);display:flex;align-items:center;gap:24px}
+.hourglass-controls button{width:52px;height:52px;border:1px solid #d4c2aa44;border-radius:50%;color:#f2dfc6;background:#1119;display:grid;place-items:center}
+.hourglass-controls button svg{width:23px;height:23px;stroke-width:1.5}
+.hourglass-controls #hourglass-start{width:86px;height:86px;border-color:#f0d5b2cc;box-shadow:0 0 20px #d89e5820}
+.hourglass-controls #hourglass-start svg{width:30px;height:30px}
+.hourglass-controls #hourglass-start .pause-icon{display:none}
+.hourglass-controls #hourglass-start.is-running .play-icon{display:none}
+.hourglass-controls #hourglass-start.is-running .pause-icon{display:block}
+.hourglass-controls button:hover{background:#d9a15b2e}
+body.hourglass-mode .clock-layout,body.hourglass-mode .toolbar{visibility:hidden}
+@media(max-width:700px){.hourglass-motto{left:5vw;top:3vh;font-size:9px}.hourglass-focus-pill{right:4vw;top:3vh;min-width:90px;height:36px;font-size:10px}.hourglass-modes{right:4vw;top:17vh;min-width:110px;gap:13px}.hourglass-modes button{font-size:9px;gap:9px}.hourglass-modes button:before{width:11px;height:11px}#hourglass-canvas{height:88vh;width:min(50.3vh,88vw);top:43%}.hourglass-copy{top:43%}.hourglass-copy small{width:104px;font-size:9px}.hourglass-controls{bottom:3vh;gap:14px}.hourglass-controls button{width:42px;height:42px}.hourglass-controls #hourglass-start{width:68px;height:68px}}
+@media(prefers-reduced-motion:reduce){.hourglass-stage *{animation:none!important;transition:none!important}}
+
+.hourglass-end-prompt{position:absolute;left:50%;bottom:2vh;transform:translateX(-50%);font-size:12px;letter-spacing:.08em;opacity:.72;text-align:center;white-space:nowrap}.hourglass-end-prompt[hidden]{display:none}
+.hourglass-stage.is-finished #hourglass-canvas{animation:finish-blink .85s ease-in-out infinite}
+@keyframes finish-blink{0%,100%{opacity:1}50%{opacity:.42}}

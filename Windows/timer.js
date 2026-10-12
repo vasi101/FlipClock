@@ -70,8 +70,8 @@
       if (timer.remaining === 0) {
         timer.deadline = null; timer.finished = true;
         alarmUntil = sound.alarm ? Date.now() + 30000 : 0;
-        if (sound.alarm && (!audio || audio.state !== "running")) byId("audio-status").textContent = "Time is up! Click anywhere to enable the alarm sound.";
-        lastAlarm = 0; save(); openPanel();
+        byId("audio-status").textContent = "";
+        lastAlarm = 0; save();
       }
     }
     const running = timer.deadline !== null;
@@ -81,12 +81,15 @@
     byId("timer-dismiss").hidden = !timer.finished;
     byId("timer-badge").hidden = !running && !timer.finished && timer.remaining === timer.duration;
     byId("timer-badge").textContent = timer.finished ? "Time is up!" : `${running ? "Timer" : "Paused"} · ${format(timer.remaining)}`;
+    globalThis.flipTimerState = () => ({ duration: timer.duration, remaining: timer.remaining, running: timer.deadline !== null, finished: timer.finished, display: format(timer.remaining) });
+    globalThis.onFlipTimerUpdate?.(globalThis.flipTimerState());
     for (const field of fields) field.disabled = running;
     document.querySelectorAll("[data-duration]").forEach(button => button.disabled = running);
     if (Date.now() < alarmUntil && Date.now() - lastAlarm >= 1200) { lastAlarm = Date.now(); tone(880, .25, .35); tone(1100, .35, .35, .3); }
   }
   byId("timer-start").onclick = () => {
     void unlock();
+    if (timer.finished) { reset(); return; }
     if (timer.deadline !== null) { timer.remaining = Math.max(0, timer.deadline - Date.now()); timer.deadline = null; }
     else {
       if (timer.finished || timer.remaining === timer.duration) {

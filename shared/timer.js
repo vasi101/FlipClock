@@ -12,7 +12,7 @@
     if (stored && Number.isFinite(stored.duration) && stored.duration >= 1000 && stored.duration <= 359999000 && Number.isFinite(stored.remaining) && stored.remaining >= 0 && stored.remaining <= stored.duration && (stored.deadline === null || Number.isFinite(stored.deadline)) && typeof stored.finished === "boolean") timer = stored;
   } catch {}
   const save = () => { try { localStorage.setItem("flip-clock-sound", JSON.stringify(sound)); localStorage.setItem("flip-clock-timer", JSON.stringify(timer)); } catch {} };
-  let audio, alarmUntil = 0, lastAlarm = 0;
+  let audio, alarmUntil = 0, lastAlarm = 0, lastWarningSec = null;
   async function unlock() {
     try {
       audio ??= new AudioContext();
@@ -48,9 +48,21 @@
     if (open) { byId("settings").hidden = true; byId("settings-toggle").setAttribute("aria-expanded", "false"); byId("timer-close").focus(); }
     else byId("timer-toggle").focus();
   }
-  byId("timer-toggle").onclick = () => openPanel(byId("timer-panel").hidden);
+  byId("timer-toggle").onclick = () => {
+    byId("settings").hidden = true;
+    byId("settings-toggle").setAttribute("aria-expanded", "false");
+    const enableBtn = byId("hourglass-enable");
+    if (enableBtn) enableBtn.click();
+    else openPanel(byId("timer-panel").hidden);
+  };
   byId("timer-close").onclick = () => openPanel(false);
-  byId("timer-badge").onclick = () => openPanel();
+  byId("timer-badge").onclick = () => {
+    byId("settings").hidden = true;
+    byId("settings-toggle").setAttribute("aria-expanded", "false");
+    const enableBtn = byId("hourglass-enable");
+    if (enableBtn) enableBtn.click();
+    else openPanel();
+  };
   byId("settings-toggle").addEventListener("click", () => { byId("timer-panel").hidden = true; byId("timer-toggle").setAttribute("aria-expanded", "false"); });
   document.addEventListener("keydown", event => { if (event.key === "Escape" && !byId("timer-panel").hidden) openPanel(false); });
   const fields = ["timer-hours", "timer-minutes", "timer-seconds"].map(byId);
@@ -67,26 +79,40 @@
   function refresh() {
     if (timer.deadline !== null) {
       timer.remaining = Math.max(0, timer.deadline - Date.now());
+      if (timer.remaining > 0 && timer.remaining <= 5000) {
+        const sec = Math.ceil(timer.remaining / 1000);
+        if (sec >= 1 && sec <= 5 && sec !== lastWarningSec) {
+          lastWarningSec = sec;
+          if (sound.alarm) tone(sec === 1 ? 1200 : 880 + (5 - sec) * 50, .08, .35);
+        }
+      }
       if (timer.remaining === 0) {
         timer.deadline = null; timer.finished = true;
+        lastWarningSec = null;
         alarmUntil = sound.alarm ? Date.now() + 30000 : 0;
-        if (sound.alarm && (!audio || audio.state !== "running")) byId("audio-status").textContent = "Time is up! Click anywhere to enable the alarm sound.";
-        lastAlarm = 0; save(); openPanel();
+        byId("audio-status").textContent = "";
+        lastAlarm = 0; save();
       }
     }
     const running = timer.deadline !== null;
     byId("timer-display").textContent = format(timer.remaining);
     byId("timer-start").textContent = running ? "Pause" : timer.finished ? "Start again" : timer.remaining < timer.duration ? "Resume" : "Start";
     byId("timer-status").textContent = timer.finished ? "Time is up!" : running ? "Counting down" : timer.remaining < timer.duration ? "Paused" : "Ready";
+    byId("timer-panel").classList.toggle("is-finished", timer.finished);
+    document.querySelectorAll(".timer-presets [data-duration]").forEach(button => { button.classList.toggle("is-active", !running && Number(button.dataset.duration) * 1000 === timer.duration); });
     byId("timer-dismiss").hidden = !timer.finished;
     byId("timer-badge").hidden = !running && !timer.finished && timer.remaining === timer.duration;
     byId("timer-badge").textContent = timer.finished ? "Time is up!" : `${running ? "Timer" : "Paused"} · ${format(timer.remaining)}`;
+    globalThis.flipTimerState = () => ({ duration: timer.duration, remaining: timer.remaining, deadline: timer.deadline, running: timer.deadline !== null, finished: timer.finished, warning: timer.deadline !== null && timer.remaining > 0 && timer.remaining <= 5000, display: format(timer.remaining) });
+    globalThis.onFlipTimerUpdate?.(globalThis.flipTimerState());
     for (const field of fields) field.disabled = running;
     document.querySelectorAll("[data-duration]").forEach(button => button.disabled = running);
     if (Date.now() < alarmUntil && Date.now() - lastAlarm >= 1200) { lastAlarm = Date.now(); tone(880, .25, .35); tone(1100, .35, .35, .3); }
   }
   byId("timer-start").onclick = () => {
     void unlock();
+    if (timer.finished) { reset(); return; }
+    lastWarningSec = null;
     if (timer.deadline !== null) { timer.remaining = Math.max(0, timer.deadline - Date.now()); timer.deadline = null; }
     else {
       if (timer.finished || timer.remaining === timer.duration) {
@@ -95,10 +121,11 @@
         timer.duration = timer.remaining = duration;
       }
       timer.finished = false; alarmUntil = 0; timer.deadline = Date.now() + timer.remaining;
+      if (document.body?.classList?.contains("hourglass-mode")) openPanel(false);
     }
     save(); refresh();
   };
-  function reset() { alarmUntil = 0; byId("audio-status").textContent = ""; timer.deadline = null; timer.finished = false; timer.remaining = timer.duration; save(); refresh(); }
+  function reset() { lastWarningSec = null; alarmUntil = 0; byId("audio-status").textContent = ""; timer.deadline = null; timer.finished = false; timer.remaining = timer.duration; save(); refresh(); }
   byId("timer-reset").onclick = reset;
   byId("timer-dismiss").onclick = reset;
   for (const field of fields) field.addEventListener("input", () => { if (timer.deadline !== null) return; const duration = readDuration(); if (duration !== null) { timer.duration = duration; reset(); } });
