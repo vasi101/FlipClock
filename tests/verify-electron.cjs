@@ -73,7 +73,8 @@ const { pathToFileURL } = require("node:url");
   }
   contents.url = "https://example.com/";
   assert.equal(contents.session.check(contents, "fullscreen"), false);
-  assert.equal(menu.some(item => item.role === "appMenu"), platform === "darwin");
+  assert.equal(Array.isArray(menu), true);
+  assert.equal(menu.length, 0);
   appEvents["window-all-closed"]();
   assert.equal(quit, platform !== "darwin");
   windows.length = 0;

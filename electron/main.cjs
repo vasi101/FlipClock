@@ -51,7 +51,7 @@ function createWindow() {
 }
 
 app.whenReady().then(async () => {
-  Menu.setApplicationMenu(null);
+  Menu.setApplicationMenu(Menu.buildFromTemplate([]));
   await createWindow();
   if (smokeTest) {
     // Runs against the actual packaged renderer as well as the development app.
