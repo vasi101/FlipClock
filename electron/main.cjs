@@ -62,7 +62,8 @@ app.whenReady().then(async () => {
       check(document.getElementById('theme-options').children.length === 10, 'Themes missing');
       check(document.getElementById('wallpaper-options').children.length === 10, 'Wallpapers missing');
       document.getElementById('timer-toggle').click();
-      check(!document.getElementById('timer-panel').hidden, 'Timer panel did not open');
+      check(!document.getElementById('hourglass-stage').hidden, 'Focus timer view did not open');
+      check(document.getElementById('timer-panel').hidden, 'Timer setup panel unexpectedly opened');
       localStorage.setItem('flip-clock-smoke-test', 'ok');
       check(localStorage.getItem('flip-clock-smoke-test') === 'ok', 'Storage unavailable');
       localStorage.removeItem('flip-clock-smoke-test');
